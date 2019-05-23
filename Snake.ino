@@ -41,11 +41,12 @@ void setup() {
 }
 
 void loop() {
- AppleSpawn();
+ 
  UpdateSnake();
  MovementPlayer();
  Loop();
  DrawSnake();
+ AppleSpawn();
  MarkerUpdate();
  
  DisplaySlate();
@@ -120,17 +121,13 @@ void AppleSpawn() {
     gotApple=true;
     eatLights*=2;
     eat++;
+    Tone_Start(5000,50);
   }
   if (gotApple==true)
   {
     appleX=random(8);
     appleY=random(8);
-    while (ReadPx(appleX,appleY) == Blue)
-    {
-      appleX=random(8);
-      appleY=random(8);
-    }
-    while (ReadPx(appleX,appleY) == Green)
+    while (ReadPx(appleX,appleY) != 0)
     {
       appleX=random(8);
       appleY=random(8);
@@ -144,7 +141,7 @@ void ApplesLights() {
   if (eatLights==256)
   {
     eatLights=1;
-    Tone_Start(18150,50);
+    Tone_Start(18150,100);
     Delay=Delay-12.5;    
   }
   SetAuxLEDs(eatLights-1);
@@ -179,7 +176,7 @@ void CheckDeath() {
   {
     if (snakeArray[0].x==snakeArray[i].x && snakeArray[0].y==snakeArray[i].y)
     {
-      Tone_Start(18150,100);
+      Tone_Start(20000,100);
       for (int i=0; i<8; i++)
       {
         for (int j=0; j<8; j++)
@@ -189,12 +186,7 @@ void CheckDeath() {
       }
       DisplaySlate();
       delay(500);
-      appleX= random(8);
-      appleY= random(8);
-      eat=1;
-      marker=4;
-      eatLights=1;
-      Delay=150;
+      setup();
       ClearSlate();
     }
   }
